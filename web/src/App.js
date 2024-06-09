@@ -8,7 +8,7 @@ function App() {
     <Router>
       <Routes>
           <Route path="/" element={<Upload />} />
-          {/* Other routes can go here */}
+          {/* Other routes go here */}
       </Routes>
   </Router>
   );
