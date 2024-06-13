@@ -1,32 +1,36 @@
-import React, {useState} from "react";
-// import axios from 'axios';
+import React, { useState } from 'react';
+import axios from 'axios';
 import '../App.css';
 
-const Upload  = () => {
+const Upload = () => {
     const [image, setImage] = useState(null);
-    const [show, showImg] = useState();
-
+    const [imgUrl, setImgUrl] = useState(null);
+    const [resultUrl, setResultUrl] = useState('');
 
     const handleImageChange = (event) => {
-        setImage(event.target.files[0]);
-        showImg(URL.createObjectURL(event.target.files[0]));
+        const file = event.target.files[0];
+        if (file) {
+            setImgUrl(URL.createObjectURL(file));
+            setImage(file);
+        }
     };
 
     const handleUpload = async () => {
         if (!image) return;
 
         const formData = new FormData();
-        formData.append("image", image);
+        formData.append('image', image);
 
         try {
-            const response = await fetch('http://localhost:5000/upload', {
-                method: 'POST',
-                body: formData,
+            const response = await axios({
+                method: 'post',
+                url: 'http://localhost:5000/upload',
+                data: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             });
-
-            const data = await response.json();
-            console.log(data);
-            // Handle the response as needed
+            setResultUrl(response.data.url);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -34,14 +38,13 @@ const Upload  = () => {
 
     return (
         <div>
-            <h1>
-                This is where you will uplaod a picture of your clothes
-            </h1>
-            <input type = "file" accept="image/*" onChange={handleImageChange}/>
+            <h1>This is where you will upload a picture of your clothes</h1>
+            <input type="file" accept="image/*" onChange={handleImageChange} />
             <button onClick={handleUpload}>Upload</button>
-            <img src = {show} alt = "preview"/>
+            {imgUrl && <img src = {imgUrl} alt = "image preview" />}
+            {resultUrl && <img src={resultUrl} alt="Processed result" />}
         </div>
-    )
+    );
 };
 
 export default Upload;
