@@ -52,32 +52,19 @@ app.post('/upload', upload.single('image'), async (req, res) => {
             console.log("Check if file exists");
             return res.status(400).send({ error: "No image file provided" });
         }
-
         console.log("after if");
 
-        // prepareing for aws upload
-        const params = {
-            Bucket: bucketName,
-            Key: file.originalname,
-            Body: file.buffer,
-            ContentType: file.mimetype,
-        }
 
-        console.log("about to put file")
-        const command = new PutObjectCommand(params)
+        // Save the uploaded file temporarily
+        const tempFilePath = path.join(process.cwd(), 'temp', file.originalname);
+        fs.writeFileSync(tempFilePath, file.buffer);
 
-        console.log("sending file")
-        const s3Response = await s3.send(command)
-        console.log('after aws upload')
-
-        const encodedFileName = encodeURIComponent(file.originalname);
-        const imageUrl = `https://${bucketName}.s3.amazonaws.com/${encodedFileName}`;
-        console.log('S3 link:', imageUrl);
+        // Here is where i will call background removal script
 
         // Prepare the form data for Remove.bg
         const formData = new FormData();
         formData.append('size', 'auto');
-        formData.append('image_url', 'https://www.remove.bg/example.jpg');
+        formData.append('image_file', fs.createReadStream(tempFilePath));
 
         console.log('about to make request');
 
@@ -109,6 +96,31 @@ app.post('/upload', upload.single('image'), async (req, res) => {
         const fileUrl = `http://localhost:5000/static/${fileName}`;
 
         console.log('saved file url', fileUrl);
+
+
+
+
+
+        // prepareing for aws upload
+        const params = {
+            Bucket: bucketName,
+            Key: file.originalname,
+            Body: file.buffer,
+            ContentType: file.mimetype,
+        }
+
+        console.log("about to put file")
+        const command = new PutObjectCommand(params)
+
+        console.log("sending file")
+        const s3Response = await s3.send(command)
+        console.log('after aws upload')
+
+        const encodedFileName = encodeURIComponent(file.originalname);
+        const imageUrl = `https://${bucketName}.s3.amazonaws.com/${encodedFileName}`;
+        console.log('S3 link:', imageUrl);
+
+
 
         res.status(200).send({ imgurUrl: imageUrl, fileUrl: fileUrl });
         console.log('imageUrl',imageUrl );
