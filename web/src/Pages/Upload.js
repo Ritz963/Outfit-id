@@ -30,7 +30,7 @@ const Upload = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            setResultUrl(response.data.imageUrl);
+            setResultUrl(response.data.processedImageUrl);
             console.log(resultUrl);
         } catch (error) {
             console.error('Error:', error);
@@ -42,9 +42,9 @@ const Upload = () => {
             <h1>This is where you will upload a picture of your clothes</h1>
             <input type="file" accept="image/*" onChange={handleImageChange} />
             <button onClick={handleUpload}>Upload</button>
-            {imgUrl && <img src={imgUrl} alt="background remove preview" />}
+            {imgUrl && <img src={imgUrl} alt="background remove preview" className="image-preview" />}
             {resultUrl && <h2>Here is the processed image</h2>}
-            {resultUrl && <img src={resultUrl} alt="Processed result" />}
+            {resultUrl && <img src={resultUrl} alt="Processed result" className="image-preview" />}
         </div>
     );
 };
