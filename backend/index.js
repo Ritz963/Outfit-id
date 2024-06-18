@@ -9,6 +9,8 @@ import axios from 'axios';
 import FormData from 'form-data';
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import dotenv from 'dotenv';
+import { exec } from 'child_process'
+import { spawn } from 'child_process'
 
 
 // Load environment variables from .env file
@@ -43,11 +45,9 @@ app.post('/upload', upload.single('image'), async (req, res) => {
         console.log("req.body", req.body)
         console.log("req.file", req.file)
 
-        req.file.buffer
 
         // // shorthands req.file to just file
         const file = req.file
-
         if (!file) {
             console.log("Check if file exists");
             return res.status(400).send({ error: "No image file provided" });
@@ -56,78 +56,82 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 
 
         // Save the uploaded file temporarily
-        const tempFilePath = path.join(process.cwd(), 'temp', file.originalname);
-        fs.writeFileSync(tempFilePath, file.buffer);
-
-        // Here is where i will call background removal script
-
-        // Prepare the form data for Remove.bg
-        const formData = new FormData();
-        formData.append('size', 'auto');
-        formData.append('image_file', fs.createReadStream(tempFilePath));
-
-        console.log('about to make request');
-
-
-        // Make the request to Remove.bg
-        const removeBgResponse = await axios({
-        method: 'post',
-        url: 'https://api.remove.bg/v1.0/removebg',
-        data: formData,
-        responsetype: 'arraybuffer',
-        headers: {
-            ...formData.getHeaders(),
-            'X-Api-Key': 'Xv8SkX86mZq3XjUogEF8FTdb',
+        const tempDir = path.join(process.cwd(), 'temp');
+        if (!fs.existsSync(tempDir)) {
+        fs.mkdirSync(tempDir);
         }
+        const tempFilePath = path.join(tempDir, file.originalname);
+        fs.writeFileSync(tempFilePath, file.buffer);
+        console.log("saved file to temp")
+
+
+        // run python child
+        const pythonScriptPath = path.join(process.cwd(), 'background_removal.py');
+        console.log(pythonScriptPath)
+        const python = spawn('python', [pythonScriptPath, tempFilePath]);
+
+        let outputPath = '';
+
+        python.stdout.on('data', (data) => {
+            console.log(`stdout: ${data}`);
+            outputPath += data.toString();
         });
 
-        console.log('finished request');
+        python.stderr.on('data', (data) => {
+            console.error(`stderr: ${data}`);
+        });
 
-        if (removeBgResponse.status !== 200) {
-          console.log('Remove.bg error', removeBgResponse.status, removeBgResponse.statusText);
-          return res.status(removeBgResponse.status).send({ error: removeBgResponse.statusText });
-        }
-    
-        // Save the processed image locally
-        const fileName = `${uuidv4()}.png`;
-        const filePath = path.join(process.cwd(), 'static', fileName);
-        fs.writeFileSync(filePath, removeBgResponse.data);
-    
-        const fileUrl = `http://localhost:5000/static/${fileName}`;
+        python.on('close', async (code) => {
+            console.log(`child process close all stdio with code ${code}`);
+            if (code !== 0) {
+              return res.status(500).send({ error: 'Error removing background' });
+            }
 
-        console.log('saved file url', fileUrl);
+            outputPath = outputPath.trim();
+            console.log(`Output path from Python script: ${outputPath}`);
+      
+            // Read the processed image file
+            const processedFileBuffer = fs.readFileSync(outputPath);
+            const uniqueName = uuidv4() + '-' + path.basename(outputPath);
+      
+            // Prepare for AWS upload
+            const params = {
+              Bucket: bucketName,
+              Key: uniqueName,
+              Body: processedFileBuffer,
+              ContentType: 'image/png', // Ensure this is correct
+            };
+            const command = new PutObjectCommand(params);
+      
+            console.log('about to put processed file');
+      
+            try {
+              const s3Response = await s3.send(command);
+              console.log('after aws upload');
+      
+              // URL-encode the file name
+              const encodedFileName = encodeURIComponent(uniqueName);
+              const imageUrl = `https://${bucketName}.s3.amazonaws.com/${encodedFileName}`;
+              console.log('S3 link:', imageUrl);
+      
+              // Clean up the temporary file
+              //fs.unlinkSync(tempFilePath);
+      
+              res.status(200).send({ imageUrl });
+              console.log('sent url');
+            } catch (uploadError) {
+              console.error('AWS S3 upload error:', uploadError);
+              res.status(500).send({ error: 'Error uploading to S3' });
+            }
+        });
 
 
-
-
-
-        // prepareing for aws upload
-        const params = {
-            Bucket: bucketName,
-            Key: file.originalname,
-            Body: file.buffer,
-            ContentType: file.mimetype,
-        }
-
-        console.log("about to put file")
-        const command = new PutObjectCommand(params)
-
-        console.log("sending file")
-        const s3Response = await s3.send(command)
-        console.log('after aws upload')
-
-        const encodedFileName = encodeURIComponent(file.originalname);
-        const imageUrl = `https://${bucketName}.s3.amazonaws.com/${encodedFileName}`;
-        console.log('S3 link:', imageUrl);
-
-
-
-        res.status(200).send({ imgurUrl: imageUrl, fileUrl: fileUrl });
-        console.log('imageUrl',imageUrl );
-        console.log('fileUrl', imageUrl );
     } catch (error) {
+        console.error('Server error', error.message);
         res.status(500).send({ error: error.message });
     }
+
+
 });
 
 const PORT = process.env.PORT || 5000;

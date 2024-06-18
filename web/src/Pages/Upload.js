@@ -6,7 +6,6 @@ const Upload = () => {
     const [image, setImage] = useState(null);
     const [imgUrl, setImgUrl] = useState(null);
     const [resultUrl, setResultUrl] = useState('');
-    const [awsUrl, setAwsUrl] = useState('');
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -31,8 +30,8 @@ const Upload = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            setResultUrl(response.data.fileUrl);
-            setAwsUrl(response.data.imageUrl);
+            setResultUrl(response.data.imageUrl);
+            console.log(resultUrl);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -43,11 +42,9 @@ const Upload = () => {
             <h1>This is where you will upload a picture of your clothes</h1>
             <input type="file" accept="image/*" onChange={handleImageChange} />
             <button onClick={handleUpload}>Upload</button>
-            {imgUrl && <img src={imgUrl} alt="image preview" />}
+            {imgUrl && <img src={imgUrl} alt="background remove preview" />}
             {resultUrl && <h2>Here is the processed image</h2>}
             {resultUrl && <img src={resultUrl} alt="Processed result" />}
-            {awsUrl && <h2>Here is the image saved to AWS</h2>}
-            {awsUrl && <img src={awsUrl} alt="AWS result" />}
         </div>
     );
 };
