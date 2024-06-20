@@ -18,6 +18,74 @@ const accessKey = process.env.ACCESS_KEY;
 const bucketName = process.env.BUCKET_NAME;
 const serpapiKey = process.env.SERPAPI_KEY;
 
+const clothingTypes = [
+    "shirt", "pants", "dress", "skirt", "jacket", "coat", "sweater", "t-shirt",
+    "jeans", "shorts", "blouse", "suit", "hoodie", "scarf", "gloves", "hat",
+    "cap", "shoes", "boots", "sneakers", "socks", "tie", "belt", "underwear"
+];
+
+const brands = [
+    "Nike", "Adidas", "Puma", "Gucci", "Prada", "Louis Vuitton", "Chanel",
+    "H&M", "Zara", "Uniqlo", "Levi's", "Ralph Lauren", "Calvin Klein", "Tommy Hilfiger",
+    // add more later
+];
+
+const colors = [
+    "red", "blue", "green", "yellow", "black", "white", "pink", "purple", "orange",
+    "gray", "brown", "beige", "gold", "silver", "navy", "maroon", "teal", "turquoise", "burgundy",
+    // add more later
+];
+
+  
+const extractClothingType = (titles, clothingTypes) => {
+    const foundTypes = {};
+
+    titles.forEach(title => {
+        clothingTypes.forEach(type => {
+        if (title.toLowerCase().includes(type.toLowerCase())) {
+            foundTypes[type] = (foundTypes[type] || 0) + 1;
+        }
+        });
+    });
+
+    const sortedTypes = Object.entries(foundTypes).sort((a, b) => b[1] - a[1]);
+    return sortedTypes.length > 0 ? sortedTypes[0][0] : "Unknown";
+};
+
+const extractBrand = (titles, brands) => {
+    const foundBrands = {};
+
+    titles.forEach(title => {
+        brands.forEach(brand => {
+        if (title.toLowerCase().includes(brand.toLowerCase())) {
+            foundBrands[brand] = (foundBrands[brand] || 0) + 1;
+        }
+        });
+    });
+
+    const sortedBrands = Object.entries(foundBrands).sort((a, b) => b[1] - a[1]);
+    return sortedBrands.length > 0 ? sortedBrands[0][0] : "Unknown";
+};
+
+const extractColor = (titles, colors) => {
+    const foundColors = {};
+
+    titles.forEach(title => {
+        colors.forEach(color => {
+        if (title.toLowerCase().includes(color.toLowerCase())) {
+            foundColors[color] = (foundColors[color] || 0) + 1;
+        }
+        });
+    });
+
+    const sortedColors = Object.entries(foundColors).sort((a, b) => b[1] - a[1]);
+    return sortedColors.length > 0 ? sortedColors[0][0] : "Unknown";
+};
+
+
+
+
+
 // API setup
 const app = express();
 app.use(cors());
@@ -109,13 +177,12 @@ app.post('/upload', upload.single('image'), async (req, res) => {
         try {
             // Upload original file
             const originalS3Response = await s3.send(new PutObjectCommand(originalParams));
-            console.log('Original image uploaded:', originalS3Response);
+            //console.log('Original image uploaded:', originalS3Response);
 
             // Upload processed file
             const processedS3Response = await s3.send(new PutObjectCommand(processedParams));
-            console.log('Processed image uploaded:', processedS3Response);
+            //console.log('Processed image uploaded:', processedS3Response);
 
-            // URL-encode the file names
             const originalImageUrl = `https://${bucketName}.s3.amazonaws.com/${encodeURIComponent(uniqueOriginalName)}`;
             const processedImageUrl = `https://${bucketName}.s3.amazonaws.com/${encodeURIComponent(uniqueProcessedName)}`;
 
@@ -126,26 +193,40 @@ app.post('/upload', upload.single('image'), async (req, res) => {
             fs.unlinkSync(tempFilePath);
             fs.unlinkSync(outputPath);
 
-            res.status(200).send({ originalImageUrl, processedImageUrl });
-            console.log('Sent URLs');
-
 
             /*
             *   Use Serp Api to get search results
             */
 
+            console.log("about to use serpapi")
 
-
+            // Use Serp Api to get search results
             getJson({
-              engine: "google_lens",
-              url: originalImageUrl,
-              api_key: serpapiKey
+                engine: "google_lens",
+                url: originalImageUrl,
+                api_key: serpapiKey
             }, (json) => {
-              console.log(json["visual_matches"]);
+                const visualMatches = json["visual_matches"] || [];
+                const titles = visualMatches.slice(0, 5).map(match => match.title);
+    
+                // Extract clothing type, brand, and color
+                const clothingType = extractClothingType(titles, clothingTypes);
+                const brand = extractBrand(titles, brands);
+                const color = extractColor(titles, colors);
+    
+                console.log("extracted everytihgn")
+
+                res.status(200).send({
+                originalImageUrl,
+                processedImageUrl,
+                clothingType,
+                brand,
+                color,
+                titles
+                });
+                console.log('Sent URLs, clothing type, brand, color, and titles');
             });
 
-
-            
 
             
         } catch (uploadError) {
