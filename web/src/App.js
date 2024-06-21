@@ -1,13 +1,14 @@
-import './App.css';
+import './css/App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Upload from "./Pages/Upload";
+import Login from "./Pages/Login";
 
 
 function App() {
   return (
     <Router>
       <Routes>
-          <Route path="/" element={<Upload />} />
+          <Route path="/" element={<Login />} />
           {/* Other routes go here */}
       </Routes>
   </Router>
