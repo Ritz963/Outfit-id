@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/App.css';
+//import '../css/Login.css';
 import { MdEmail } from "react-icons/md";
 import { IoLockClosed } from "react-icons/io5";
-import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { auth } from '../firebase';
 import Navigation from '../Components/Navigation';
 
-const Login = () => {
+
+const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPass, setConfirmPass] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    const signIn = async (event) => {
+    const signUp = async (event) => {
         event.preventDefault();
-        signInWithEmailAndPassword(auth, email, password)
+        createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             console.log(userCredential)
         })
@@ -25,13 +27,12 @@ const Login = () => {
     };
 
   return (
-    
     <div className='login'>
-    <Navigation/>
-        <div className='center-wrapper'>
+        <Navigation/>
+            <div className='center-wrapper'>
         <div className='wrapper'>
-            <form onSubmit={signIn}>
-                <h1>Login</h1>
+            <form onSubmit={signUp}>
+                <h1>Create Acccount</h1>
                 {error && <p className="error">{error}</p>}
                 <div className="input-box">
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' required />
@@ -43,15 +44,15 @@ const Login = () => {
                     <IoLockClosed className='icon' />
                 </div>
 
-                <div className="remember-forgot">
-                    <label> <input type="checkbox" /> Remember me </label>
-                    <a href="#">Forgot password</a>
+                <div className ="input-box">
+                    <input type = "password" value={confirmPass} onChange={(e) => setPassword(e.target.value)} placeholder = 'Confirm Password' required />
+                    <IoLockClosed className='icon' />
                 </div>
 
                 <button type="submit">Login</button>
 
                 <div className="register-link">
-                    <p>Don't have an account? <a href="./signup">Register</a></p>
+                    <p>Already have an account? <a href="./Login.js">Sign in</a></p>
                 </div>
                 
             </form>
@@ -61,4 +62,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

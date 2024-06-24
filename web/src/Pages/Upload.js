@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../css/App.css';
+import Navigation from '../Components/Navigation';
+
 
 const Upload = () => {
     const [image, setImage] = useState(null);
@@ -47,6 +49,7 @@ const Upload = () => {
     };
 
     return (
+        <>
         <div>
             <h1>This is where you will upload a picture of your clothes</h1>
             <input type="file" accept="image/*" onChange={handleImageChange} />
@@ -64,6 +67,7 @@ const Upload = () => {
                 ))}
             </ul>
         </div>
+        </>
     );
 };
 
