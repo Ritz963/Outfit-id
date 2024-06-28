@@ -12,6 +12,7 @@ const Upload = () => {
     const [brand, setBrand] = useState('');
     const [color, setColor] = useState('');
     const [titles, setTitles] = useState([]);
+    const [error, setError] = useState(null);
 
 
     const handleImageChange = (event) => {
@@ -44,13 +45,16 @@ const Upload = () => {
             setTitles(response.data.titles);
             console.log(response.data.processedImageUrl);
         } catch (error) {
+            setError(error.message);
             console.error('Error:', error);
         }
     };
 
     return (
-        <>
+        <div className='upload'>
+        <Navigation/>
         <div>
+            {error && <div className = 'error'><p>{error}</p></div>}
             <h1>This is where you will upload a picture of your clothes</h1>
             <input type="file" accept="image/*" onChange={handleImageChange} />
             <button onClick={handleUpload}>Upload</button>
@@ -67,7 +71,7 @@ const Upload = () => {
                 ))}
             </ul>
         </div>
-        </>
+        </div>
     );
 };
 

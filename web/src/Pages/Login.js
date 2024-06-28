@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../css/App.css';
 import { MdEmail } from "react-icons/md";
 import { IoLockClosed } from "react-icons/io5";
+import { MdError } from "react-icons/md";
 import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { auth } from '../firebase';
 import Navigation from '../Components/Navigation';
@@ -18,9 +19,11 @@ const Login = () => {
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             console.log(userCredential)
+            navigate('/upload');
         })
         .catch((error) => {
-            console.log(error)
+            console.error("Caught error:", error);
+            setError(error.message || "Error creating account");
         })
     };
 
@@ -32,7 +35,7 @@ const Login = () => {
         <div className='wrapper'>
             <form onSubmit={signIn}>
                 <h1>Login</h1>
-                {error && <p className="error">{error}</p>}
+                {error && <div className = 'error'><MdError className='icon'/><p>{error}</p></div>}
                 <div className="input-box">
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' required />
                     <MdEmail className='icon' />

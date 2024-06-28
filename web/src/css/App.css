@@ -29,7 +29,6 @@ body {
   align-items: center;
   min-height: 100vh;
   min-width:100vh;
-  display: flex;
   justify-content: center; 
   align-items: center; 
 }
@@ -127,6 +126,26 @@ body {
   margin: 20px 0 15px;
 }
 
+.error{
+  background:red;
+  padding:15px 10px 0 0;
+  display: flex;
+  margin:0;
+}
+
+.wrapper .error p{
+  margin-left: 15px;
+}
+
+.wrapper .error .icon{
+  position: relative;
+  font-size:30px;
+  left:10px;
+  top: 50%;
+  transform: translateY(-10%);
+
+}
+
 .register-link p a {
   color: white;
   text-decoration: none;
@@ -135,4 +154,9 @@ body {
 
 .register-link p a:hover{
   text-decoration: underline;
+}
+
+.upload p{
+  margin-left: 20px;
+  padding: 10px;
 }
