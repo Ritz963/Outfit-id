@@ -9,13 +9,16 @@
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "express": "^4.19.2",
+    "firebase": "^10.12.2",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.3",
     "react-dom": "^18.3.1",
     "react-icons": "^5.2.1",
     "react-router-dom": "^6.23.1",
     "react-scripts": "5.0.1",
+    "react-slick": "^0.30.2",
     "shared": "file:../shared",
+    "slick-carousel": "^1.8.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

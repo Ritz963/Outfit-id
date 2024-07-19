@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MdEmail } from "react-icons/md";
-import { MdError } from "react-icons/md";
+import { MdEmail, MdError } from "react-icons/md";
 import { IoLockClosed } from "react-icons/io5";
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
-import { auth } from '../firebase';
+import { IoPerson } from "react-icons/io5";
 import Navigation from '../Components/Navigation';
 import '../css/App.css';
+import axios from 'axios';
 
 
 
@@ -14,6 +13,7 @@ const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
+    const [name, setName] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
@@ -25,15 +25,18 @@ const SignUp = () => {
             return;
         }
         
-        createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            console.log(userCredential)
+        try {
+            const response = await axios.post('http://localhost:3001/auth/signup', {
+                email,
+                password,
+                name
+            });
+            console.log(response.data);
             navigate('/');
-        })
-        .catch((error) => {
+        } catch (error) {
             console.error("Caught error:", error);
-            setError(error.message || "Error creating account");
-        })
+            setError(error.response?.data?.error || "Error creating account");
+        }
     };
 
   return (
@@ -44,6 +47,12 @@ const SignUp = () => {
             <form onSubmit={signUp}>
                 <h1>Create Acccount</h1>
                 {error && <div className = 'error'><MdError className='icon'/><p>{error}</p></div>}
+
+                <div className="input-box">
+                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder='First Name' required />
+                    <IoPerson className='icon' />
+                </div>
+
                 <div className="input-box">
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' required />
                     <MdEmail className='icon' />

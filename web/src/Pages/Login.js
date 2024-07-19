@@ -19,7 +19,7 @@ const Login = () => {
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             console.log(userCredential)
-            navigate('/upload');
+            navigate('/home');
         })
         .catch((error) => {
             console.error("Caught error:", error);

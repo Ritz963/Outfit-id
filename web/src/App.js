@@ -7,6 +7,9 @@ import SignUp from './Pages/SignUp';
 import Upload from './Pages/Upload';
 //import './css/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 
 
 function App() {

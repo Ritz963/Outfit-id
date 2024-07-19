@@ -29,8 +29,6 @@ body {
   align-items: center;
   min-height: 100vh;
   min-width:100vh;
-  justify-content: center; 
-  align-items: center; 
 }
 
 .wrapper {
@@ -159,4 +157,37 @@ body {
 .upload p{
   margin-left: 20px;
   padding: 10px;
+}
+
+
+.Home .showClothes{
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  
+}
+
+.Home .topCarousel{
+  background: green;
+  height: 500px;
+  width: 400px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+}
+
+.Home .bottomCarousel{
+  height: 500px;
+  width: 400px;
+  background: red;  
+}
+
+.Home .shoesCarousel{
+  height: 500px;
+  width: 400px;
+}
+
+.Home .clothesCarousel{
+  background:pink;
 }
