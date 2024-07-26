@@ -30,7 +30,7 @@ const clothingTypes = [
 
 const brands = [
     "Nike", "Adidas", "Puma", "Gucci", "Prada", "Louis Vuitton", "Chanel",
-    "H&M", "Zara", "Uniqlo", "Levi's", "Ralph Lauren", "Calvin Klein", "Tommy Hilfiger", "Essentials"
+    "H&M", "Zara", "Uniqlo", "Levi's", "Ralph Lauren", "Calvin Klein", "Tommy Hilfiger", "Essentials", "Gallery Dept",
     // add more later
 ];
 

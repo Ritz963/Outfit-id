@@ -12,6 +12,11 @@ const Home = () => {
     const [tops, setTops] = useState([]);
     const [bottoms, setBottoms] = useState([]);
     const [shoes, setShoes] = useState([]);
+
+    const [selectedTop, setSelectedTop] = useState(null);
+    const [showInfo, setShowInfo] = useState(false);
+
+
     const navigate = useNavigate();
 
     console.log('gonna try to load user data')
@@ -61,12 +66,18 @@ const Home = () => {
         return () => unsubscribe();
     }, [navigate]);
 
+    const handleTopClick = (top) => {
+        setSelectedTop(top);
+        setShowInfo(true);
+    };
+
     const sliderSettings = {
         dots: false,
         infinite: true,
-        speed: 500,
+        speed: 0,
         slidesToShow: 1,
         slidesToScroll: 1,
+        beforeChange: (current, next) => setSelectedTop(tops[next])
     };
 
     return (
@@ -81,44 +92,57 @@ const Home = () => {
                         <div>
                             <h1>Welcome, {userData.name}</h1>
                             <p>Email: {userData.email}</p>
-                            <div className='showClothesWrapper'>
-                                <div className='showClothes'>
-                                    <div className='clothesCarousel'>
-                                        <div className='topCarousel'>
-                                            <h3>Tops</h3>
-                                            <Slider {...sliderSettings}>
-                                                {tops.map((top) => (
-                                                    <div key={top.id}>
-                                                        <img src={top.imageUrl} alt={top.brand} style={{ width: '300px', height: 'auto' }} />
-                                                        <p>{top.brand} - {top.color}</p>
-                                                    </div>
-                                                ))}
-                                            </Slider>
-                                        </div>
-                                        <div className='bottomCarousel'>
-                                            <h3>Bottoms</h3>
-                                            <Slider {...sliderSettings}>
-                                                {bottoms.map((bottom) => (
-                                                    <div key={bottom.id}>
-                                                        <img src={bottom.imageUrl} alt={bottom.brand} style={{ width: '100%', height: 'auto' }} />
-                                                        <p>{bottom.brand} - {bottom.color}</p>
-                                                    </div>
-                                                ))}
-                                            </Slider>
-                                        </div>
-                                        <div className='shoesCarousel'>
-                                            <h3>Shoes</h3>
-                                            <Slider {...sliderSettings}>
-                                                {shoes.map((shoe) => (
-                                                    <div key={shoe.id}>
-                                                        <img src={shoe.imageUrl} alt={shoe.brand} style={{ width: '100%', height: 'auto' }} />
-                                                        <p>{shoe.brand} - {shoe.color}</p>
-                                                    </div>
-                                                ))}
-                                            </Slider>
-                                        </div>
+                            <div className='showClothes'>
+                                <div className = 'topItem'>
+
+                                    <div className='topCarousel'>
+                                        <h3>Tops</h3>
+                                        <Slider {...sliderSettings}>
+                                            {tops.map((top) => (
+                                                <div key={top.id} onClick={() => handleTopClick(top)} >
+                                                    <img src={top.imageUrl} alt={top.brand} style={{ width: '100px', height: 'auto' }} />
+                                                    <p>{top.brand} - {top.color}</p>
+                                                </div>
+                                            ))}
+                                        </Slider> 
                                     </div>
+
+                                    <div className={`infoCarousel ${showInfo ? 'show' : ''}`}>
+                                        <h3>Info</h3>
+                                        {selectedTop && (
+                                            <div>
+                                                <p>Brand: {selectedTop.brand}</p>
+                                                <p>Color: {selectedTop.color}</p>
+                                                <p>Type: {selectedTop.type}</p>
+                                            </div>
+                                        )}
+                                    </div>
+
                                 </div>
+
+                                {/* <div className='bottomCarousel'>
+                                    <h3>Bottoms</h3>
+                                    <Slider {...sliderSettings}>
+                                        {bottoms.map((bottom) => (
+                                            <div key={bottom.id}>
+                                                <img src={bottom.imageUrl} alt={bottom.brand} style={{ width: '100%', height: 'auto' }} />
+                                                <p>{bottom.brand} - {bottom.color}</p>
+                                            </div>
+                                        ))}
+                                    </Slider>
+                                </div>
+                                <div className='shoesCarousel'>
+                                    <h3>Shoes</h3>
+                                    <Slider {...sliderSettings}>
+                                        {shoes.map((shoe) => (
+                                            <div key={shoe.id}>
+                                                <img src={shoe.imageUrl} alt={shoe.brand} style={{ width: '100%', height: 'auto' }} />
+                                                <p>{shoe.brand} - {shoe.color}</p>
+                                            </div>
+                                        ))}
+                                    </Slider>
+                                </div> */}
+
                             </div>
                         </div>
                     ) : (

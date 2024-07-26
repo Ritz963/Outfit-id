@@ -161,20 +161,38 @@ body {
 
 
 .Home .showClothes{
-  max-width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
+  width:700px;
+  height:700px;
+  background: rgba(255,0,0);
+  display:flex;
+  min-height: 0px; 
+  min-width: 0px;
   
 }
 
-.Home .topCarousel{
-  background: green;
-  height: 500px;
-  width: 400px;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+.Home .topItem {
+  background: pink;
+  height: 300px;
+  display: flex;
+  flex-basis: 100%;
+}
 
+.Home .topCarousel {
+  background: rgba(0, 255, 0, .5);
+  display: inline-block;
+  width: 500px;
+}
+
+.Home .infoCarousel {
+  background: rgba(0, 0, 255, .5);
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+  transition: max-width 0.5s ease-in-out;
+}
+
+.Home .infoCarousel.show {
+  width: 400px;
 }
 
 .Home .bottomCarousel{
