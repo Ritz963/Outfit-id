@@ -160,52 +160,64 @@ body {
 }
 
 
-.Home .showClothes{
-  width:700px;
-  height:700px;
-  background: rgba(255,0,0);
-  display:flex;
-  min-height: 0px; 
-  min-width: 0px;
-  
+.Home .showClothes {
+  width: auto;
+  height: auto;
+  background: rgba(255, 0, 0);
+  margin-right: 30%;
+  margin-left: 30%;
+  display: flex;
+  flex-direction: column; 
+  gap: 5px;
 }
 
-.Home .topItem {
+.Home .clothesItem {
   background: pink;
-  height: 300px;
   display: flex;
-  flex-basis: 100%;
+  justify-content: center;
+  align-items: stretch;
+  gap: 20px;
+  padding: 0px;
 }
 
 .Home .topCarousel {
   background: rgba(0, 255, 0, .5);
   display: inline-block;
-  width: 500px;
+  width: 300px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-style: solid;
+  border-width: 2px;;
 }
 
 .Home .infoCarousel {
   background: rgba(0, 0, 255, .5);
-  display: inline-block;
   width: 0;
+  height: 0;
   overflow: hidden;
-  transition: max-width 0.5s ease-in-out;
+  transition: width 0.5s ease-in-out;
+  display: flex;
+  align-items: center;
 }
 
 .Home .infoCarousel.show {
-  width: 400px;
+  width: 300px;
+  height: auto;
 }
 
-.Home .bottomCarousel{
-  height: 500px;
-  width: 400px;
-  background: red;  
+.Home .clothesCarousel {
+  background: pink;
 }
 
-.Home .shoesCarousel{
-  height: 500px;
-  width: 400px;
+.Home .topCarousel img{
+  margin-left: auto;
+  margin-right: auto;
+  border-style: solid;
+  border-width: 1px;
 }
 
-.Home .clothesCarousel{
-  background:pink;
+.Home button saveOutfit{
+  background-color: white;
+  color:bisque;
 }

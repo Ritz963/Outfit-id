@@ -14,7 +14,13 @@ const Home = () => {
     const [shoes, setShoes] = useState([]);
 
     const [selectedTop, setSelectedTop] = useState(null);
-    const [showInfo, setShowInfo] = useState(false);
+    const [showTopInfo, setShowTopInfo] = useState(false);
+
+    const [selectedBottom, setSelectedBottom] = useState(null);
+    const [showBottomInfo, setShowBottomInfo] = useState(false);
+
+    const [selectedShoe, setSelectedShoe] = useState(null);
+    const [showShoeInfo, setShowShoeInfo] = useState(false);
 
 
     const navigate = useNavigate();
@@ -68,16 +74,45 @@ const Home = () => {
 
     const handleTopClick = (top) => {
         setSelectedTop(top);
-        setShowInfo(true);
+        setShowTopInfo(true);
     };
 
-    const sliderSettings = {
+    const handleBottomClick = (bottom) => {
+        setSelectedBottom(bottom);
+        setShowBottomInfo(true);
+    };
+
+    const handleShoeClick = (shoe) => {
+        setSelectedShoe(shoe);
+        setShowShoeInfo(true);
+    };
+
+    const sliderSettingsTop = {
         dots: false,
         infinite: true,
-        speed: 0,
+        speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
         beforeChange: (current, next) => setSelectedTop(tops[next])
+    };
+
+    const sliderSettingsBottom = {
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        beforeChange: (current, next) => setSelectedBottom(bottoms[next])
+    };
+
+    const sliderSettingsShoe = {
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        centerMode:false,
+        beforeChange: (current, next) => setSelectedShoe(shoes[next])
     };
 
     return (
@@ -93,55 +128,89 @@ const Home = () => {
                             <h1>Welcome, {userData.name}</h1>
                             <p>Email: {userData.email}</p>
                             <div className='showClothes'>
-                                <div className = 'topItem'>
+                                <div className = 'clothesItem'>
 
                                     <div className='topCarousel'>
-                                        <h3>Tops</h3>
-                                        <Slider {...sliderSettings}>
+                                        {/* <h3>Tops</h3> */}
+                                        <Slider {...sliderSettingsTop}>
                                             {tops.map((top) => (
                                                 <div key={top.id} onClick={() => handleTopClick(top)} >
-                                                    <img src={top.imageUrl} alt={top.brand} style={{ width: '100px', height: 'auto' }} />
-                                                    <p>{top.brand} - {top.color}</p>
+                                                    <img src={top.imageUrl} alt={top.brand} style={{ objectFit: 'contain', width: '100%', height: '100%'  }} />
+                                                    {/* <p>{top.brand} - {top.color}</p> */}
                                                 </div>
                                             ))}
                                         </Slider> 
                                     </div>
 
-                                    <div className={`infoCarousel ${showInfo ? 'show' : ''}`}>
-                                        <h3>Info</h3>
+                                    <div className={`infoCarousel ${showTopInfo ? 'show' : ''}`}>
+                                        {/* <h3>Info</h3> */}
                                         {selectedTop && (
-                                            <div>
-                                                <p>Brand: {selectedTop.brand}</p>
-                                                <p>Color: {selectedTop.color}</p>
-                                                <p>Type: {selectedTop.type}</p>
+                                            <div className='inner'>
+                                                <p><b>Brand:</b> {selectedTop.brand}</p>
+                                                <p><b>Color:</b> {selectedTop.color}</p>
+                                                <p><b>Type:</b> {selectedTop.type}</p>
                                             </div>
                                         )}
                                     </div>
 
                                 </div>
+                                
+                                <div className='clothesItem'>
+                                    <div className='topCarousel'>
+                                        {/* <h3>Bottoms</h3> */}
+                                        <Slider {...sliderSettingsBottom}>
+                                            {bottoms.map((bottom) => (
+                                                <div key={bottom.id} onClick={() => handleBottomClick(bottom)}>
+                                                    <img src={bottom.imageUrl} alt={bottom.brand} style={{ objectFit: 'contain', width: '100%', height: '100%' }} />
+                                                    {/* <p>{bottom.brand} - {bottom.color}</p> */}
+                                                </div>
+                                            ))}
+                                        </Slider>
+                                    </div>
 
-                                {/* <div className='bottomCarousel'>
-                                    <h3>Bottoms</h3>
-                                    <Slider {...sliderSettings}>
-                                        {bottoms.map((bottom) => (
-                                            <div key={bottom.id}>
-                                                <img src={bottom.imageUrl} alt={bottom.brand} style={{ width: '100%', height: 'auto' }} />
-                                                <p>{bottom.brand} - {bottom.color}</p>
+                                    <div className={`infoCarousel ${showBottomInfo ? 'show' : ''}`}>
+                                        {/* <h3>Info</h3> */}
+                                        {selectedBottom && (
+                                            <div className='inner'>
+                                                <p><b>Brand:</b> {selectedBottom.brand}</p>
+                                                <p><b>Color:</b> {selectedBottom.color}</p>
+                                                <p><b>Type:</b> {selectedBottom.type}</p>
                                             </div>
-                                        ))}
-                                    </Slider>
+                                        )}
+                                    </div>
+
+
                                 </div>
-                                <div className='shoesCarousel'>
-                                    <h3>Shoes</h3>
-                                    <Slider {...sliderSettings}>
-                                        {shoes.map((shoe) => (
-                                            <div key={shoe.id}>
-                                                <img src={shoe.imageUrl} alt={shoe.brand} style={{ width: '100%', height: 'auto' }} />
-                                                <p>{shoe.brand} - {shoe.color}</p>
+
+                                <div className='clothesItem'>
+                                    <div className='topCarousel'>
+                                        {/* <h3>Shoes</h3> */}
+                                        <Slider {...sliderSettingsShoe}>
+                                            {shoes.map((shoe) => (
+                                                <div key={shoe.id} onClick={() => handleShoeClick(shoe)}>
+                                                    <img src={shoe.imageUrl} alt={shoe.brand} style={{ objectFit: 'contain', width: '80%', height: '80%' }} />
+                                                    {/* <p>{shoe.brand} - {shoe.color}</p> */}
+                                                </div>
+                                            ))}
+                                        </Slider>
+                                    </div>
+
+
+                                    <div className={`infoCarousel ${showShoeInfo ? 'show' : ''}`}>
+                                        {/* <h3>Info</h3> */}
+                                        {selectedShoe && (
+                                            <div className='inner'>
+                                                <p><b>Brand:</b> {selectedShoe.brand}</p>
+                                                <p><b>Color:</b> {selectedShoe.color}</p>
+                                                <p><b>Type:</b> {selectedShoe.type}</p>
                                             </div>
-                                        ))}
-                                    </Slider>
-                                </div> */}
+                                        )}
+                                    </div>
+
+
+                                </div>
+
+                                <buttom type = 'submit' className = 'saveOutfit'>Click here to save outfit</buttom>
 
                             </div>
                         </div>

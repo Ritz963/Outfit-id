@@ -59,6 +59,7 @@ const Upload = () => {
             setColor(response.data.color);
             setTitles(response.data.titles);
             console.log(response.data.processedImageUrl);
+            console.log(response.data.titles)
         } catch (error) {
             console.error('Error:', error);
             setError(error.message || 'An error occurred while uploading the image.');

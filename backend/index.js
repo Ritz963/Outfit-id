@@ -25,12 +25,13 @@ const serpapiKey = process.env.SERPAPI_KEY;
 const clothingTypes = [
     "shirt", "pants", "dress", "skirt", "jacket", "coat", "sweater", "t-shirt",
     "jeans", "shorts", "blouse", "suit", "hoodie", "scarf", "gloves", "hat",
-    "cap", "shoes", "boots", "sneakers", "socks", "tie", "belt", "underwear", "tee"
+    "cap", "shoes", "boots", "sneakers", "sneaker", "socks", "tie", "belt", "underwear", " Tee", "boost"
 ];
 
 const brands = [
     "Nike", "Adidas", "Puma", "Gucci", "Prada", "Louis Vuitton", "Chanel",
     "H&M", "Zara", "Uniqlo", "Levi's", "Ralph Lauren", "Calvin Klein", "Tommy Hilfiger", "Essentials", "Gallery Dept",
+    "New Balance", "Yeezy", "adidas"
     // add more later
 ];
 
@@ -95,7 +96,7 @@ const extractColor = (titles, colors) => {
 const categorizeClothing = (clothingType) => {
     const tops = ['shirt', 't-shirt', 'suit', 'hoodie', 'blouse', 'sweater', 'jacket', 'coat', 'dress', 'blouse', 'tee'];
     const bottoms = ['pants', 'jeans', 'shorts', 'skirt', 'trousers', 'leggings', 'sweatpants', 'joggers'];
-    const shoes = ['shoes', 'boots', 'sneakers', 'sandals'];
+    const shoes = ['shoes', 'boots', 'sneakers', 'sandals', 'sneaker', 'boost'];
 
     clothingType = clothingType.toLowerCase();
 
