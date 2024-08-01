@@ -3,8 +3,32 @@ import { auth, db } from '../firebase';
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import { IoIosArrowBack } from "react-icons/io"; //<IoIosArrowBack />
+import { IoIosArrowForward } from "react-icons/io"; //<IoIosArrowForward />
+
+
 import Navigation from '../Components/Navigation';
 import Slider from "react-slick";
+
+
+function SampleNextArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+        <div onClick={onClick} className={`arrow ${className}`} >
+            <IoIosArrowForward className="arrows"/>
+        </div>
+    );
+  }
+  
+  function SamplePrevArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+        <div onClick={onClick} className={`arrow ${className}`} >
+            <IoIosArrowBack className="arrows"/>
+        </div>
+    );
+  }
+
 
 const Home = () => {
     const [userData, setUserData] = useState(null);
@@ -93,6 +117,8 @@ const Home = () => {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
+        nextArrow: <SampleNextArrow to="next"/>,
+        prevArrow: <SamplePrevArrow to="prev" />,
         beforeChange: (current, next) => setSelectedTop(tops[next])
     };
 
@@ -102,6 +128,8 @@ const Home = () => {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
+        nextArrow: <SampleNextArrow to="next"/>,
+        prevArrow: <SamplePrevArrow to="prev" />,
         beforeChange: (current, next) => setSelectedBottom(bottoms[next])
     };
 
@@ -112,6 +140,8 @@ const Home = () => {
         slidesToShow: 1,
         slidesToScroll: 1,
         centerMode:false,
+        nextArrow: <SampleNextArrow to="next"/>,
+        prevArrow: <SamplePrevArrow to="prev" />,
         beforeChange: (current, next) => setSelectedShoe(shoes[next])
     };
 
