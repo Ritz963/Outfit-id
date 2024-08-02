@@ -2,3 +2,5 @@ backend/.env
 backend/firebase.js
 web/src/firebase.js
 backend/.env
+web/src/firebase.js
+web/src/.env
