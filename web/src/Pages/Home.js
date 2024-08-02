@@ -5,8 +5,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowBack } from "react-icons/io"; //<IoIosArrowBack />
 import { IoIosArrowForward } from "react-icons/io"; //<IoIosArrowForward />
-
-
+import ClothesInfo from '../Components/ClothesInfo';
 import Navigation from '../Components/Navigation';
 import Slider from "react-slick";
 
@@ -117,6 +116,7 @@ const Home = () => {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
+        lazyLoad: true,
         nextArrow: <SampleNextArrow to="next"/>,
         prevArrow: <SamplePrevArrow to="prev" />,
         beforeChange: (current, next) => setSelectedTop(tops[next])
@@ -128,6 +128,7 @@ const Home = () => {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
+        lazyLoad: true,
         nextArrow: <SampleNextArrow to="next"/>,
         prevArrow: <SamplePrevArrow to="prev" />,
         beforeChange: (current, next) => setSelectedBottom(bottoms[next])
@@ -139,7 +140,7 @@ const Home = () => {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-        centerMode:false,
+        lazyLoad: true,
         nextArrow: <SampleNextArrow to="next"/>,
         prevArrow: <SamplePrevArrow to="prev" />,
         beforeChange: (current, next) => setSelectedShoe(shoes[next])
@@ -160,52 +161,38 @@ const Home = () => {
                             <div className='showClothes'>
                                 <div className = 'clothesItem'>
 
-                                    <div className='topCarousel'>
-                                        {/* <h3>Tops</h3> */}
+                                    <div className='imgCarousel'>
                                         <Slider {...sliderSettingsTop}>
                                             {tops.map((top) => (
                                                 <div key={top.id} onClick={() => handleTopClick(top)} >
-                                                    <img src={top.imageUrl} alt={top.brand} style={{ objectFit: 'contain', width: '100%', height: '100%'  }} />
-                                                    {/* <p>{top.brand} - {top.color}</p> */}
+                                                    <img src={top.imageUrl} alt={top.brand} style={{ objectFit: 'contain', width: '90%', height: '90%'  }} />
                                                 </div>
                                             ))}
                                         </Slider> 
                                     </div>
 
                                     <div className={`infoCarousel ${showTopInfo ? 'show' : ''}`}>
-                                        {/* <h3>Info</h3> */}
                                         {selectedTop && (
-                                            <div className='inner'>
-                                                <p><b>Brand:</b> {selectedTop.brand}</p>
-                                                <p><b>Color:</b> {selectedTop.color}</p>
-                                                <p><b>Type:</b> {selectedTop.type}</p>
-                                            </div>
+                                            <ClothesInfo item={selectedTop} />
                                         )}
                                     </div>
 
                                 </div>
                                 
                                 <div className='clothesItem'>
-                                    <div className='topCarousel'>
-                                        {/* <h3>Bottoms</h3> */}
+                                    <div className='imgCarousel'>
                                         <Slider {...sliderSettingsBottom}>
                                             {bottoms.map((bottom) => (
                                                 <div key={bottom.id} onClick={() => handleBottomClick(bottom)}>
                                                     <img src={bottom.imageUrl} alt={bottom.brand} style={{ objectFit: 'contain', width: '100%', height: '100%' }} />
-                                                    {/* <p>{bottom.brand} - {bottom.color}</p> */}
                                                 </div>
                                             ))}
                                         </Slider>
                                     </div>
 
                                     <div className={`infoCarousel ${showBottomInfo ? 'show' : ''}`}>
-                                        {/* <h3>Info</h3> */}
                                         {selectedBottom && (
-                                            <div className='inner'>
-                                                <p><b>Brand:</b> {selectedBottom.brand}</p>
-                                                <p><b>Color:</b> {selectedBottom.color}</p>
-                                                <p><b>Type:</b> {selectedBottom.type}</p>
-                                            </div>
+                                            <ClothesInfo item={selectedBottom} />
                                         )}
                                     </div>
 
@@ -213,13 +200,11 @@ const Home = () => {
                                 </div>
 
                                 <div className='clothesItem'>
-                                    <div className='topCarousel'>
-                                        {/* <h3>Shoes</h3> */}
+                                    <div className='imgCarousel'>
                                         <Slider {...sliderSettingsShoe}>
                                             {shoes.map((shoe) => (
                                                 <div key={shoe.id} onClick={() => handleShoeClick(shoe)}>
                                                     <img src={shoe.imageUrl} alt={shoe.brand} style={{ objectFit: 'contain', width: '80%', height: '80%' }} />
-                                                    {/* <p>{shoe.brand} - {shoe.color}</p> */}
                                                 </div>
                                             ))}
                                         </Slider>
@@ -227,13 +212,8 @@ const Home = () => {
 
 
                                     <div className={`infoCarousel ${showShoeInfo ? 'show' : ''}`}>
-                                        {/* <h3>Info</h3> */}
                                         {selectedShoe && (
-                                            <div className='inner'>
-                                                <p><b>Brand:</b> {selectedShoe.brand}</p>
-                                                <p><b>Color:</b> {selectedShoe.color}</p>
-                                                <p><b>Type:</b> {selectedShoe.type}</p>
-                                            </div>
+                                            <ClothesInfo item={selectedShoe} />
                                         )}
                                     </div>
 
