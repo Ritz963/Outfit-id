@@ -5,6 +5,7 @@ import Login from './Pages/Login';
 import Home from './Pages/Home';
 import SignUp from './Pages/SignUp';
 import Upload from './Pages/Upload';
+import TestLogin from './Pages/TestLogin';
 //import './css/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "slick-carousel/slick/slick.css";
@@ -20,6 +21,7 @@ function App() {
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/home" element={<Home />} />
         <Route path="/upload" element={<Upload />} />
+        <Route path="/testLogin" element={<TestLogin />} />
       </Routes>
     </Router>
   );
