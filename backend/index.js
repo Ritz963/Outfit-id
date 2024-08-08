@@ -31,13 +31,14 @@ const clothingTypes = [
 const brands = [
     "Nike", "Adidas", "Puma", "Gucci", "Prada", "Louis Vuitton", "Chanel",
     "H&M", "Zara", "Uniqlo", "Levi's", "Ralph Lauren", "Calvin Klein", "Tommy Hilfiger", "Essentials", "Gallery Dept",
-    "New Balance", "Yeezy", "adidas"
+    "New Balance", "Yeezy", "adidas", "Chrome hearts", "GAP", "Columbia", "Hermes", "Skechers", "Vans", "Timberland",
     // add more later
 ];
 
 const colors = [
     "red", "blue", "green", "yellow", "black", "white", "pink", "purple", "orange",
     "gray", "brown", "beige", "gold", "silver", "navy", "maroon", "teal", "turquoise", "burgundy", "Oatmeal",
+    "light blue", "dark blue", "light green", "dark green", "light red", "dark red", "light yellow", "dark yellow",
     // add more later
 ];
 

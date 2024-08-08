@@ -40,7 +40,7 @@ const SignUp = () => {
     };
 
   return (
-    <div className='login'>
+    <div className='Signup'>
         <Navigation/>
             <div className='center-wrapper'>
         <div className='wrapper'>
@@ -71,7 +71,7 @@ const SignUp = () => {
                 <button type="submit">Create Account</button>
 
                 <div className="register-link">
-                    <p>Already have an account? <a href="./Login.js">Sign in</a></p>
+                    <p>Already have an account? <a href="./">Sign in</a></p>
                 </div>
                 
             </form>

@@ -9,7 +9,18 @@
 }
 
 .login{
-  background: url(../assets/background2.jpg) no-repeat;
+  /* background: url(../assets/background2.jpg) no-repeat; */
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  min-width:100vh;
+  --cursor-stroke: #6b5537;
+  --cursor-fill: none;
+  --cursor-stroke-width: 2px;
+}
+
+.Signup{
+  background: url(../assets/background3.jpg) no-repeat; 
   background-size: cover;
   background-position: center;
   min-height: 100vh;
@@ -37,7 +48,7 @@ body {
   border: 2px solid rgba(255, 255, 255, .2);
   backdrop-filter: blur(30px);
   box-shadow: 0 0 10px rgba(0, 0, 0, .2);
-  color: white;
+  color: grey;
   border-radius: 10px;
   padding: 30px 40px;
 }
@@ -61,16 +72,16 @@ body {
   height: 100%;
   background: transparent;
   outline: none;
-  border: 2px solid rgba(255, 255, 255, .2);
+  border: 2px solid rgba(189, 189, 189, 0.7);
   border-radius: 40px;
   font-size: 16px;
-  color: white;
+  color: grey;
   padding: 20px 45px 20px 20px;
 
 }
 
 .input-box input::placeholder{
-  color: #fff
+  color: grey
 }
 
 .input-box .icon{
@@ -91,12 +102,12 @@ body {
 }
 
 .remember-forgot label input {
-  accent-color: white;
+  accent-color: grey;
   margin-right: 4px;
 }
 
 .remember-forgot a {
-  color: white;
+  color: grey;
   text-decoration: none;
 }
 
@@ -145,7 +156,7 @@ body {
 }
 
 .register-link p a {
-  color: white;
+  color: grey;
   text-decoration: none;
   font-weight: 600;
 }
@@ -266,13 +277,23 @@ body {
 /*******************************************************************************
 Grid stuff
 *******************************************************************************/
+
+@keyframes loaderAnim {
+	to {
+		opacity: 1;
+		transform: scale3d(0.5,0.5,1);
+	}
+}
+
 .TestLogin {
-  background: linear-gradient(90deg, #00C0FF 0%, #FFCF00 49%, #FC4F4F 80%, #00C0FF 100%);
 
 	height: 100%;
 	width: 100%;
 	position: relative;
 	overflow: hidden;
+  --cursor-stroke: #6b5537;
+  --cursor-fill: none;
+  --cursor-stroke-width: 2px;
 }
 
 .TestLogin .content {
@@ -299,71 +320,102 @@ Grid stuff
 }
 
 .grid__item {
-	position: relative;
-  background-color: aquamarine;
+  position: relative;
 }
 
 .grid--img .grid__item {
-	overflow: hidden;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	will-change: transform;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
 }
 
 .grid__item-img {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	background-size: cover;
-	background-position: 50% 50%;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-size: contain; 
+  background-position: center;
+  background-repeat: no-repeat; 
 }
 
-.grid--img .grid__item-img {
-	flex: none;
-	width: calc(100% + 100px);
-	height: calc(100% + 100px);
-	will-change: transform;
+
+.grid__item-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; 
 }
+
+
+/* Specific sizes for different item types */
+.grid__item--shirt, .grid__item--pants {
+  grid-area: auto / auto / span 10 / span 5;
+}
+
+.grid__item--jewelry {
+  grid-area: auto / auto / span 5 / span 5;
+}
+
+.grid__item--shoes {
+  grid-area: auto / auto / span 5 / span 10;
+}
+
 
 /* Shorthand grid-area: grid-row-start / grid-column-start / grid-row-end / grid-column-end */
 
 .pos-1 {
-	grid-area: 10 / 1 / 26 / 7;
+	grid-area: 9 / 3 / 25 / 9;
 }
 
 .pos-2 {
-	grid-area: 1 / 18 / 9 / 27;
+	grid-area: 4 / 22 / 20 / 28;
 }
 
 .pos-3 {
-	grid-area: 1 / 36 / 14 / 42;
+	grid-area: 5 / 42 / 21 / 48;
 }
 
 .pos-4 {
-	grid-area: 13 / 11 / 32 / 18;
+	grid-area: 17 / 12 / 33 / 18;
 }
 
 .pos-5 {
-	grid-area: 17 / 32 / 32 / 38;
+	grid-area: 16 / 31 / 32 / 37;
 }
 
 .pos-6 {
-	grid-area: 20 / 46 / 28 / 51;
+	grid-area: 33 / 39 / 49 / 45;
 }
 
 .pos-7 {
-	grid-area: 43 / 1 / 51 / 10;
+	grid-area: 32 / 4 / 48 / 10;
 }
 
 .pos-8 {
-	grid-area: 38 / 14 / 46 / 22;
+	grid-area: 31 / 20 / 46 / 26;
 }
 
 .pos-9 {
-	grid-area: 40 / 26 / 51 / 32;
+	grid-area: 36 / 29 / 51 / 35;
 }
 
-.pos-10 {
- 	grid-area: 37 / 39 / 48 / 47;
+
+.cursor {
+	display: none;
+}
+
+@media (any-pointer: fine) {
+  .cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: block;
+      pointer-events: none;
+  }
+  .cursor__inner {
+      fill: var(--cursor-fill);
+      stroke: var(--cursor-stroke);
+      stroke-width: var(--cursor-stroke-width);
+  }
 }
