@@ -34,7 +34,7 @@ const Upload = () => {
             setImage(file);
         }
     };
- 
+  
     const handleUpload = async () => {
         if (!image || !userId) return;
 
