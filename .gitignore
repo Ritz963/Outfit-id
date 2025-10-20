@@ -1,0 +1,6 @@
+.DS_Store
+node_modules/
+back-end/.env
+back-end/serviceAccountKey.json
+back-end/config/firebase.js
+front-end/src/firebaseClient.js

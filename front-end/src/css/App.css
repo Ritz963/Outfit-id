@@ -1,0 +1,901 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Ensure the entire app fits the screen */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  --cursor-stroke: #6b5537;
+  --cursor-fill: none;
+  --cursor-stroke-width: 2px;
+}
+
+/* Main content area */
+.main-content {
+  display: flex;
+  flex-wrap: wrap;            /* ← allow wrapping */
+  gap: 2rem;                  /* space between columns or rows */
+  align-items: flex-start;    /* align each block at the top */
+}
+
+/* Overall carousels container */
+.carousels-container {
+  flex: 1 1 500px;            /* grow, shrink, minimum 500px */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+/* Standard carousel container for all carousels (remains unchanged) */
+.carousel-image {
+  position: relative;
+  width: 500px;     /* Consistent container width */
+  height: 300px;    /* Consistent container height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Default image styling for all carousels */
+.carousel-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Override image styling for the shoes carousel only */
+.shoes-carousel .carousel-image img {
+  width: 300px !important;    /* Force smaller width for shoes image */
+  height: 150px !important;   /* Force smaller height for shoes image */
+  object-fit: contain;
+  margin: auto;               /* Center the smaller image within the container */
+}
+
+/* Override styling for shoes images only */
+.carousel-image img.shoes-image {
+  width: 300px !important;
+  height: 150px !important;
+  object-fit: contain;
+  margin: 0 auto;  /* removes vertical centering */
+  align-self: flex-start;
+}
+
+/* Arrow button styling remains the same */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  font-size: 2rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.left-arrow {
+  left: 0.5rem;
+}
+
+.right-arrow {
+  right: 0.5rem;
+}
+
+/* Overall carousels container */
+.carousels-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;  /* centers each carousel horizontally */
+}
+
+/* Slick Carousel Container – the same for all carousels */
+.slick-carousel-container {
+  width: 500px;     /* Fixed container width */
+  height: 300px;    /* Fixed container height */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Each slide in the slider */
+.carousel-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px; /* same as container height */
+}
+
+/* Default styling for images (shirts, pants, etc.) */
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Override styling for shoes images only.
+   Ensure that the shoes carousel passes an extra class (e.g. "shoes-image")
+   to the img element. This rule forces the shoes image to be rendered smaller,
+   while leaving the container (and therefore arrow positions) unchanged. */
+.carousel-slide img.shoes-image {
+  width: 300px !important;
+  height: 150px !important;
+  object-fit: contain;
+  margin: auto;
+}
+
+/* React-slick default arrow button styling override */
+/* These selectors override the default arrow styles provided by slick-carousel */
+.slick-prev,
+.slick-next {
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  font-size: 2rem;
+  line-height: 40px; /* centers the arrow text */
+  cursor: pointer;
+}
+
+/* Adjust arrow positions if needed */
+.slick-prev {
+  left: 10px;
+}
+.slick-next {
+  right: 10px;
+}
+
+/* Override for the shoes carousel: make the image container smaller and center it */
+.shoes-carousel .carousel-image {
+  width: 300px;         /* Smaller width for shoes */
+  height: 150px;        /* Smaller height for shoes */
+  margin: 0 auto;       /* Center horizontally within the container */
+}
+
+/* Optionally adjust arrow sizes for the shoes carousel */
+.shoes-carousel .arrow {
+  font-size: 1.5rem;
+}
+
+/* Prevent the buttons container from shrinking and squishing its children */
+.action-buttons {
+  position: fixed; /* Keep it fixed at the bottom */
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  gap: 20px; /* Space between buttons */
+  padding: 0 20px; /* Padding on the sides */
+  z-index: 100; /* Ensure buttons are above other content */
+}
+
+/* Remove absolute positioning from individual buttons */
+.randomize-btn, .save-btn {
+  position: static; /* Remove absolute positioning */
+  transform: none; /* Remove transforms */
+  min-width: 120px; /* Ensure minimum width */
+  flex: 0 1 auto; /* Don't grow, can shrink, auto basis */
+}
+
+.action-btn {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.4s ease;
+}
+
+/* Keep upload button separate */
+.upload-btn {
+  position: absolute;
+  top: 80px;
+  right: 30px;
+}
+
+/* For very small screens, stack the buttons */
+@media (max-width: 400px) {
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #6436ed, #339af0);
+}
+
+.randomize-btn {
+  background: linear-gradient(135deg, #6436ed, #339af0);
+}
+
+/* Remove the scale on hover so the buttons don’t “jump” */
+.action-btn:hover {
+  /* no transform here */
+  box-shadow: 0 10px 25px rgba(108, 30, 196, 0.25);
+  background: linear-gradient(135deg, #6436ed, #339af0);
+}
+
+/* Likewise don’t shrink on active */
+.action-btn:active {
+  transform: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.login{
+  /* background: url(../assets/background2.jpg) no-repeat; */
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  min-width:100vh;
+  --cursor-stroke: #6b5537;
+  --cursor-fill: none;
+  --cursor-stroke-width: 2px;
+}
+
+.Signup{
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  min-width:100vh;
+  --cursor-stroke: #6b5537;
+  --cursor-fill: none;
+  --cursor-stroke-width: 2px;
+}
+
+.background-video {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  height: auto;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%) scale(0.9); 
+  object-fit: cover;
+  z-index: -1;
+}
+
+
+body {
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.center-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  min-width:100vh;
+}
+
+.wrapper {
+  width: 420px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, .2);
+  backdrop-filter: blur(30px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+  color: grey;
+  border-radius: 10px;
+  padding: 30px 40px;
+}
+
+.wrapper h1 {
+  font-size: 36px;
+  text-align: center;
+  color: #000000;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.wrapper .input-box{
+  position:relative;
+  width: 100%;
+  height: 50px;
+  margin: 30px 0;
+}
+
+.input-box input{
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  outline: none;
+  border: 2px solid rgba(189, 189, 189, 0.7);
+  border-radius: 40px;
+  font-size: 16px;
+  color: grey;
+  padding: 20px 45px 20px 20px;
+}
+
+.input-box input::placeholder{
+  color: grey
+}
+
+.input-box .icon{
+  position: absolute;
+  right:20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size:20px;
+}
+
+.wrapper .remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  font-size:  15px;
+  margin: -15px 0 20px;
+}
+
+.remember-forgot label input {
+  accent-color: rgb(49, 125, 239);
+  margin-right: 4px;
+}
+
+.remember-forgot a {
+  color: grey;
+  text-decoration: none;
+}
+
+.remember-forgot a:hover{
+  text-decoration: underline;
+}
+
+.wrapper button {
+  width: 100%;
+  height: 45px;
+  background: linear-gradient(135deg, #a9a7a7ab, #c2b1b1);
+  border: none;
+  outline: none;
+  border-radius: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+  cursor: pointer;
+  font-size: 16px;
+  color: #ffffff;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.wrapper button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.wrapper .register-link{
+  font-size: 15px;
+  text-align: center;
+  margin: 20px 0 15px;
+}
+
+.error{
+  background:red;
+  padding:15px 10px 0 0;
+  display: flex;
+  margin:0;
+}
+
+.wrapper .error p{
+  margin-left: 15px;
+}
+
+.wrapper .error .icon{
+  position: relative;
+  font-size:30px;
+  left:10px;
+  top: 50%;
+  transform: translateY(-10%);
+}
+
+.register-link p a {
+  color: grey;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-link p a:hover{
+  text-decoration: underline;
+}
+
+.grid {
+	pointer-events: none;
+	position: absolute;
+	width: 110%;
+	height: 110%;
+	top: -5%;
+	left: -5%;
+	display: grid;
+	grid-template-columns: repeat(50,2%);
+	grid-template-rows: repeat(50,2%);
+}
+
+.grid__item {
+  position: relative;
+}
+
+.grid--img .grid__item {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+.grid__item-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-size: contain; 
+  background-position: center;
+  background-repeat: no-repeat; 
+}
+
+.grid__item-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; 
+}
+
+
+/* Specific sizes for different item types */
+.grid__item--shirt, .grid__item--pants {
+  grid-area: auto / auto / span 10 / span 5;
+}
+
+.grid__item--jewelry {
+  grid-area: auto / auto / span 5 / span 5;
+}
+
+.grid__item--shoes {
+  grid-area: auto / auto / span 5 / span 10;
+}
+
+
+/* Shorthand grid-area: grid-row-start / grid-column-start / grid-row-end / grid-column-end */
+
+.pos-1 {
+	grid-area: 9 / 3 / 25 / 9;
+}
+
+.pos-2 {
+	grid-area: 4 / 22 / 20 / 28;
+}
+
+.pos-3 {
+	grid-area: 5 / 42 / 21 / 48;
+}
+
+.pos-4 {
+	grid-area: 17 / 12 / 33 / 18;
+}
+
+.pos-5 {
+	grid-area: 16 / 31 / 32 / 37;
+}
+
+.pos-6 {
+	grid-area: 33 / 39 / 49 / 45;
+}
+
+.pos-7 {
+	grid-area: 32 / 4 / 48 / 10;
+}
+
+.pos-8 {
+	grid-area: 31 / 20 / 46 / 26;
+}
+
+.pos-9 {
+	grid-area: 36 / 29 / 51 / 35;
+}
+
+
+.cursor {
+	display: none;
+}
+
+@media (any-pointer: fine) {
+  .cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: block;
+      pointer-events: none;
+  }
+  .cursor__inner {
+      fill: var(--cursor-fill);
+      stroke: var(--cursor-stroke);
+      stroke-width: var(--cursor-stroke-width);
+  }
+
+}
+
+/*
+***********
+***********
+MODAL STUFF
+***********
+***********
+*/
+
+/* Overlay */
+.upload-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* darker screen behind */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal Box */
+.upload-modal .modal-content {
+  position: relative;
+  width: 80%;            /* 80% of viewport width */
+  max-width: 600px;      /* no wider than 600px */
+  min-height: 60vh;      /* at least 60% of viewport height */
+  padding: 3rem 2rem 1.5rem; /* extra top padding for the close button */
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Close “X” */
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #6436ed, #339af0);
+  color: #fff;          /* white “X” */
+  border: none;
+  border-radius: 50%;   /* circle */
+  font-size: 1.2rem;
+  line-height: 32px;    /* vertically center the text */
+  text-align: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Upload Area */
+.upload-area {
+  width: 100%;
+  height: 200px;
+  background: #dddde3;
+  border: 2px dashed #565656;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  flex: 1;               /* fill available vertical space */
+  margin-bottom: 1.5rem;
+  overflow: hidden; /* ensure the preview doesn’t overflow */
+
+}
+
+.upload-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.upload-text {
+  color: #030303;
+  font-size: 0.95rem;
+}
+
+/* Confirm Button */
+.confirm-btn {
+  margin-top: auto;      /* push it to the bottom of the flex container */
+  width: 100%;
+  padding: 0.85rem;
+  background: linear-gradient(135deg, #a9a7a7ab, #c2b1b1);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.confirm-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.confirm-btn:not(:disabled):hover {
+  background: #0056b3;
+}
+
+.upload-area .preview-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.bg-body-tertiary{
+  background-color: white;
+}
+
+
+.custom-navbar .navbar-collapse {
+  display: flex !important;
+}
+
+.custom-navbar .navbar-toggler {
+  display: none !important;
+}
+
+.info-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2000;
+}
+.info-modal {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 90%;
+  width: 300px;
+  text-align: center;
+}
+.info-image {
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+.info-modal button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: none; border-radius: 6px;
+  background: #2575fc; color: white;
+}
+
+.outfits-page {
+  padding: 2rem;
+}
+
+.outfits-page > h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.outfits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  justify-items: center;
+}
+
+/* Outfit card styles */
+.outfit-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 1rem;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.outfit-name {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.outfit-images {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.outfit-img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.outfit-footer {
+  margin-top: auto;
+}
+
+.outfit-cost {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Responsive: one column on very small screens */
+@media (max-width: 600px) {
+  .outfits-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.outfit-stack {
+  position: relative;
+  width: 100px;    /* adjust to your desired width */
+  height: 260px;   /* enough height for stacked garments */
+  margin-bottom: 1rem;
+}
+
+.stack-img {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* z‑index controls wearer order */
+.stack-img.shoes   { bottom: 0; z-index: 1; }
+.stack-img.bottoms { bottom: 50px; z-index: 2; }
+.stack-img.tops    { bottom: 150px; z-index: 3; }
+
+/* src/css/Outfits.css */
+.back-btn {
+  background: none;
+  border: none;
+  color: #2575fc;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+.back-btn:hover {
+  text-decoration: underline;
+}
+
+/*339af0    6436ed  */
+
+
+.loading-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #eeeeee;            /* or whatever backdrop you like */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+/* The main loader container */
+.loader {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  color: #339af0;                /* primary color for the first dot */
+  transform: rotateZ(45deg);
+  perspective: 1000px;
+}
+
+/* Two dots (pseudo‑elements) spinning in 3D */
+.loader:before,
+.loader:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0; left: 0;
+  width: inherit; height: inherit;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Front‑facing dot */
+.loader:before {
+  transform: rotateX(70deg);
+  /* inherits color: white */
+}
+
+/* Side‑facing dot */
+.loader:after {
+  transform: rotateY(70deg);
+  animation-delay: 0.4s;
+  color: #6436ed;             /* second dot’s color */
+}
+
+/* Keyframes for the two‑dot spin/fade effect */
+@keyframes spin {
+  0%,100% { box-shadow: 0.2em 0 0 0 currentcolor; }
+  12% {      box-shadow: 0.2em 0.2em 0 0 currentcolor; }
+  25% {      box-shadow: 0    0.2em 0 0 currentcolor; }
+  37% {      box-shadow:-0.2em 0.2em 0 0 currentcolor; }
+  50% {      box-shadow:-0.2em 0    0 0 currentcolor; }
+  62% {      box-shadow:-0.2em-0.2em 0 0 currentcolor; }
+  75% {      box-shadow: 0   -0.2em 0 0 currentcolor; }
+  87% {      box-shadow: 0.2em-0.2em 0 0 currentcolor; }
+}
+
+/* Fade‑in animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1s ease-in forwards;
+}
